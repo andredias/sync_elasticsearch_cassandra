@@ -7,40 +7,56 @@ referências:
 import signal
 import daemon
 import time
+import syslog
+from os.path import isfile
+
+intervalo = 5  # segundos
+config_filename = '/tmp/config.txt'
 
 
-def initial_program_setup():
-    pass
+def load_configuration():
+    global intervalo
+    if isfile(config_filename):
+        with open(config_filename, 'r') as f:
+            linha = f.readline().strip()
+        try:
+            intervalo = float(linha)
+        except ValueError:
+            syslog.syslog('Erro na conversão do intervalo')
+    else:
+        syslog.syslog('Arquivo %s não encontrado' % config_filename)
+    syslog.syslog('intervalo = %ss' % intervalo)
+    return
 
 
-def do_main_program():
-    while True:
-        with open("/tmp/current_time.txt", "w") as f:
-            f.write("The time is now " + time.ctime())
-        time.sleep(5)
-
-
-def program_cleanup():
-    pass
-
-
-def reload_program_config(signum, frame):
-    with open("/tmp/reload.txt", "w") as f:
-        f.write("The time is now " + time.ctime())
-    return None
+def reload_configuration(signum, frame):
+    load_configuration()
+    return
 
 
 def run():
+    while True:
+        with open("/tmp/current_time.txt", "w") as f:
+            f.write("The time is now " + time.ctime())
+        time.sleep(intervalo)
+
+
+def main():
     context = daemon.DaemonContext()
     context.signal_map = {
-        signal.SIGTERM: program_cleanup,
-        signal.SIGHUP: 'terminate',
-        signal.SIGUSR1: reload_program_config,
+        signal.SIGUSR1: reload_configuration,
     }
-    initial_program_setup()
+    load_configuration()
     with context:
-        do_main_program()
+        run()
 
 
 if __name__ == "__main__":
-    run()
+    print('''Aplicação está rodando como daemon...
+
+Para mudar o intervalo de execução:
+1. crie um arquivo %s com o intervalo desejado (em segundos). Ex.: 0.7
+2. envie um sinal SIGUSR1 ao processo para recarregar as configurações
+3. Confirme o recarregamento em /var/log/syslog
+''' % config_filename)
+    main()
