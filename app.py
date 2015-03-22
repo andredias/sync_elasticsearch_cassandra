@@ -1,13 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 '''
 referências:
     * https://www.python.org/dev/peps/pep-3143/
     * http://stackoverflow.com/questions/4637420/efficient-python-daemon
 '''
 
+from __future__ import unicode_literals
+
+import os
 import signal
 import daemon
 import time
-import syslog
+from syslog import syslog
 from os.path import isfile
 
 intervalo = 5  # segundos
@@ -22,10 +28,10 @@ def load_configuration():
         try:
             intervalo = float(linha)
         except ValueError:
-            syslog.syslog('Erro na conversão do intervalo')
+            syslog('Erro na conversão do intervalo')
     else:
-        syslog.syslog('Arquivo %s não encontrado' % config_filename)
-    syslog.syslog('intervalo = %ss' % intervalo)
+        syslog('Arquivo %s não encontrado' % config_filename)
+    syslog('intervalo = %ss' % intervalo)
     return
 
 
@@ -48,6 +54,7 @@ def main():
     }
     load_configuration()
     with context:
+        syslog('pid: %s' % os.getpid())
         run()
 
 

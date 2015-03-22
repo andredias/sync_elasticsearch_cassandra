@@ -24,7 +24,7 @@ Deve ser um programa que rode como "daemon" e pode ser escrito na linguagem de s
 Python seria desejável, caso isso não seja um problema).
 
 O programa deve verificar periodicamente (período deve ser parametrizável) se novos dados chegaram no
-Cassandra ou no ElasticSearch e sincroniza-los entre os dois “bancos” automaticamente.
+Cassandra ou no ElasticSearch e sincroniza-los entre os dois "bancos" automaticamente.
 
 Caso novos dados tenham chegado em ambos, ambos deverão ser sincronizados entre Cassandra e
 ElasticSearch.
