@@ -52,7 +52,7 @@ def search(from_timestamp):
                 },
                 "filter": {
                     "range": {
-                        "timestamp": {"from": from_timestamp}
+                        "timestamp": {"gt": from_timestamp}
                     }
                 }
             }

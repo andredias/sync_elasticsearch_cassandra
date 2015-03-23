@@ -17,7 +17,12 @@ from syslog import syslog
 ids = [uuid4() for i in range(5)]
 destinos = (dc, de)
 with open('especificacao.rst', 'r') as f:
-    especificacao = [linha.strip() for linha in f.readlines() if linha.strip()]
+    especificacao = [linha.strip()[:25:] for linha in f.readlines() if linha.strip()]
+
+
+def connect():
+    dc.connect()
+    de.connect()
 
 
 def lerolero():
@@ -29,15 +34,14 @@ def generate():
     doc = lerolero()
     dest = random.choice(destinos)
     dest.insert_update(doc, id)
-    dest_name = 'cassandra' if dest == dc else 'elasticsearch'
+    dest_name = 'cassandra    ' if dest == dc else 'elasticsearch'
     syslog('dest: %s, id: %s, timestamp: %s, mensagem: %s' %
            (dest_name, id, doc['timestamp'], doc['mensagem']))
 
 
 def main(intervalo):
     with daemon.DaemonContext():
-        dc.connect()
-        de.connect()
+        connect()
         syslog('pid: %s' % os.getpid())
         while True:
             generate()
