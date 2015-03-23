@@ -8,19 +8,15 @@ from uuid import uuid4
 
 es = Elasticsearch()
 
-index = 'desafio_simbiose'
-doc_type = 'mensagem'
+index = 'desafio'
+doc_type = 'simbiose'
 
 
-def insert(document, id=None):
+def insert_update(document, id=None):
     document.setdefault('timestamp', datetime.now())
     id = id or uuid4()
     es.index(index=index, doc_type=doc_type, id=id, body=document)
     return id
-
-
-def update(document, id, timestamp=None):
-    return insert(document, id, timestamp)
 
 
 def get(id):

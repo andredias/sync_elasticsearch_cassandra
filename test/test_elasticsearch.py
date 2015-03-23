@@ -16,15 +16,24 @@ def teardown():
 
 def test_insert():
     doc = {'mensagem': 'Olá mundo'}
-    id = de.insert(doc)
+    id = de.insert_update(doc)
     assert de.get(id)
+
+
+def test_update():
+    doc = {'mensagem': 'Olá mundo'}
+    id = de.insert_update(doc)
+    doc['mensagem'] = 'Mudei'
+    de.insert_update(doc, id=id)
+    doc2 = de.get(id)
+    assert doc['mensagem'] == doc2['mensagem']
 
 
 def test_search():
     doc1 = {'mensagem': 'Parabéns, André', 'timestamp': datetime(1973, 2, 12)}
-    id1 = de.insert(doc1)
+    id1 = de.insert_update(doc1)
     doc2 = {'mensagem': '42 anos', 'timestamp': datetime(2015, 2, 12)}
-    id2 = de.insert(doc2)
+    id2 = de.insert_update(doc2)
     # bizarro, mas o teste não passa sem o sleep(1) abaixo!
     from time import sleep
     sleep(1)
