@@ -6,12 +6,11 @@ import desafio_elasticsearch as de
 
 
 def setup():
-    de.index = 'teste'
-    de.doc_type = 'elasticsearch'
+    de.connect('teste', 'elasticsearch')
 
 
 def teardown():
-    de.es.indices.delete(index=de.index)
+    de.drop()
 
 
 def test_insert():

@@ -6,11 +6,24 @@ from elasticsearch import Elasticsearch
 from datetime import datetime
 from uuid import UUID, uuid4
 
-es = Elasticsearch()
+es = None
 
 index = 'desafio'
 doc_type = 'simbiose'
 dateformat = '%Y-%m-%d %H:%M:%S.%f'
+
+
+def connect(index_=index, doc_type_=doc_type):
+    global es
+    global index
+    global doc_type
+    index = index_
+    doc_type = doc_type_
+    es = Elasticsearch()
+
+
+def drop(index=index):
+    es.indices.delete(index=index)
 
 
 def insert_update(document, id=None):
