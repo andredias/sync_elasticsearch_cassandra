@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import os
+import sys
 import daemon
 import random
 import desafio_cassandra as dc
@@ -33,15 +34,16 @@ def generate():
            (dest_name, id, doc['timestamp'], doc['mensagem']))
 
 
-def main():
+def main(intervalo):
     with daemon.DaemonContext():
         dc.connect()
         de.connect()
         syslog('pid: %s' % os.getpid())
         while True:
             generate()
-            sleep(0.5)
+            sleep(intervalo)
 
 
 if __name__ == '__main__':
-    main()
+    intervalo = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+    main(intervalo)
