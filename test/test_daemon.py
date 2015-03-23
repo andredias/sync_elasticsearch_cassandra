@@ -7,6 +7,7 @@ import os
 import sh
 from time import sleep
 from os.path import isfile, abspath, dirname, join
+from nose.tools import nottest
 
 default_interval = 0.1
 config_filename = '/tmp/config.txt'
@@ -40,6 +41,7 @@ def teardown():
     return
 
 
+@nottest
 class TestDaemon(object):
 
     def test_launch(self):
