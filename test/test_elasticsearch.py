@@ -38,4 +38,4 @@ def test_search():
     from time import sleep
     sleep(1)
     s = de.search(from_timestamp=datetime(2014, 1, 1))
-    assert str(id2) in s and str(id1) not in s
+    assert id2 in s and id1 not in s

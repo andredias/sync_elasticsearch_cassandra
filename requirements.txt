@@ -1,2 +1,4 @@
 python-daemon
 elasticsearch
+cassandra-driver
+blist

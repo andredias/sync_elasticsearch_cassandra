@@ -4,12 +4,13 @@
 from __future__ import unicode_literals
 from elasticsearch import Elasticsearch
 from datetime import datetime
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 es = Elasticsearch()
 
 index = 'desafio'
 doc_type = 'simbiose'
+dateformat = '%Y-%m-%d %H:%M:%S.%f'
 
 
 def insert_update(document, id=None):
@@ -44,6 +45,9 @@ def search(from_timestamp):
             }
         }
     }
-
-    return {hit['_id']: hit['_source']
+    date_format = lambda x: '%Y-%m-%dT%H:%M:%S' if len(x) < 20 else '%Y-%m-%dT%H:%M:%S.%f'
+    return {UUID(hit['_id']):
+            {'mensagem': hit['_source']['mensagem'],
+             'timestamp': datetime.strptime(hit['_source']['timestamp'],
+                                            date_format(hit['_source']['timestamp']))}
             for hit in es.search(index=index, doc_type=doc_type, body=query)['hits']['hits']}
