@@ -93,7 +93,7 @@ class Sincronizador(object):
             syslog('elasticsearch > cassandra: ' + str(id))
             dc.insert_update(doc_elasticsearch[id], id)
         syslog('Fim da sincronização')
-        return
+        return cassandra_to_elastic, elastic_to_cassandra  # para fins de teste
 
 
 def main():

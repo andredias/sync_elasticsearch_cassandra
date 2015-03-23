@@ -10,7 +10,7 @@ def setup():
 
 
 def teardown():
-    de.drop()
+    de.drop('teste')
 
 
 def test_insert():

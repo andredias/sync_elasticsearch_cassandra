@@ -6,7 +6,7 @@ import desafio_cassandra as dc
 
 
 def setup():
-    dc.connect(keyspace='teste', tablename='simbiose')
+    dc.connect('teste', 'simbiose')
 
 
 def teardown():

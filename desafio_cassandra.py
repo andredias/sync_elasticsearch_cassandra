@@ -16,8 +16,12 @@ tablename = 'simbiose'
 session = None
 
 
-def connect(keyspace=keyspace, tablename=tablename):
+def connect(keyspace_=None, tablename_=None):
     global session
+    global keyspace
+    global tablename
+    keyspace = keyspace_ or keyspace
+    tablename = tablename_ or tablename
     cluster = Cluster()
     session = cluster.connect()
     result = session.execute('select * from system.schema_keyspaces where keyspace_name=%s', (keyspace, ))
@@ -49,8 +53,11 @@ def insert_update(document, id=None):
 
 def get(id):
     query = 'select id, mensagem, timestamp from {} where id = %s allow filtering'.format(tablename)
-    rows = session.execute(query, (id, ))
-    return {'mensagem': rows[0].mensagem, 'timestamp': rows[0].timestamp}
+    try:
+        rows = session.execute(query, (id, ))
+        return {'mensagem': rows[0].mensagem, 'timestamp': rows[0].timestamp}
+    except:
+        return {}
 
 
 def search(from_timestamp):

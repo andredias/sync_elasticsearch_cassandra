@@ -20,23 +20,24 @@ with open('especificacao.rst', 'r') as f:
     especificacao = [linha.strip()[:25:] for linha in f.readlines() if linha.strip()]
 
 
-def connect():
-    dc.connect()
-    de.connect()
+def connect(database=None, tablename=None):
+    dc.connect(database, tablename)
+    de.connect(database, tablename)
 
 
 def lerolero():
     return {'mensagem': random.choice(especificacao)}
 
 
-def generate():
-    id = random.choice(ids)
+def generate(id=None, dest=None):  # parâmetros ajudaram nos testes
+    id = id or random.choice(ids)
     doc = lerolero()
-    dest = random.choice(destinos)
+    dest = dest or random.choice(destinos)
     dest.insert_update(doc, id)
     dest_name = 'cassandra    ' if dest == dc else 'elasticsearch'
     syslog('dest: %s, id: %s, timestamp: %s, mensagem: %s' %
            (dest_name, id, doc['timestamp'], doc['mensagem']))
+    return id
 
 
 def main(intervalo):

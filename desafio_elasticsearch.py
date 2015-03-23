@@ -13,12 +13,12 @@ doc_type = 'simbiose'
 dateformat = '%Y-%m-%d %H:%M:%S.%f'
 
 
-def connect(index_=index, doc_type_=doc_type):
+def connect(index_=None, doc_type_=None):
     global es
     global index
     global doc_type
-    index = index_
-    doc_type = doc_type_
+    index = index_ or index
+    doc_type = doc_type_ or doc_type
     es = Elasticsearch()
 
 
@@ -40,7 +40,10 @@ def get(id):
     Não é necessário para a aplicação,
     mas sim para os testes
     '''
-    return es.get_source(index=index, doc_type=doc_type, id=id)
+    try:
+        return es.get_source(index=index, doc_type=doc_type, id=id)
+    except:
+        return {}
 
 
 def search(from_timestamp):
