@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
 from elasticsearch import Elasticsearch
 from datetime import datetime
 from uuid import UUID, uuid4

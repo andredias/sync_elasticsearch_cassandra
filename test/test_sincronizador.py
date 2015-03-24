@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 from gerador_lero_lero import generate
 from app import Sincronizador, dc, de

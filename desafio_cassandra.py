@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 '''
 referência: http://planetcassandra.org/getting-started-with-cassandra-and-python/
